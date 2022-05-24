@@ -2,3 +2,4 @@ venv
 .idea
 .env
 pikle_store
+db.sqlite3

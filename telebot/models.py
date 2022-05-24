@@ -12,6 +12,7 @@ class Executor(models.Model):
     last_name = models.CharField(max_length=50)
     photo = models.FileField()
     category = models.ManyToManyField(Category, blank=True, null=True)
+    approved = models.BooleanField(default=False)
 
 
 class Certificate(models.Model):
