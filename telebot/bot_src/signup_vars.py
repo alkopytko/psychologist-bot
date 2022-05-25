@@ -1,6 +1,17 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 
+class UD:
+    categories = 'categories'
+    path = 'path'
+    first_name = 'first_name'
+    last_name = 'last_name'
+    media_group = 'media_group'
+    scan_list = 'scan_list'
+    photo = 'photo'
+    lang_level = 'lang_level'
+
+
 class Categories:
     categories = ['social', 'children', 'work', 'loss', 'eatingbehaviour', 'partner', 'parents', 'trauma', 'obsessive',
                   'compulsive', 'personalcrisis', 'addiction', ]
@@ -19,6 +30,10 @@ class Keyboards:
     @classmethod
     def skip(cls):
         return InlineKeyboardMarkup([[cls.Buttons.skip]])
+
+    @classmethod
+    def done(cls):
+        return InlineKeyboardMarkup([[cls.Buttons.done]])
 
     @classmethod
     def categories(cls, active_list=None):
@@ -41,8 +56,9 @@ class TextMessages:
     first_name = 'Enter your first name:'
     last_name = 'Enter your last name:'
     scans = 'Upload the scans of your diplomas or student\'s I.D.'
-    photo = 'Upload your profile photo (not necessary, recommended)'
+    scans_wait_done = 'You can upload another scans, or press "Done" button.'
+    photo = 'Upload one your profile photo (not necessary, recommended)'
     categories = 'Please choose categories of requests you are working with:'
     lang_level = 'What is your level of language? Type, please.'
     congratulations = 'Congrats! Your profile is ready. Soon it will be checked by moderator and you will be able to ' \
-                      'work via Oriole. If you plan to earn money via '
+                      'work via bot.'
