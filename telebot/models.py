@@ -4,7 +4,6 @@ from django.db import models
 
 # Create your models here.
 from telebot.bot_src.shared import UPLOAD_PATH
-# from telebot.bot_src.triggers import executor_approved
 
 
 class Category(models.Model):
@@ -28,11 +27,12 @@ class Executor(models.Model):
     def __str__(self):
         return str(self.user_id)
 
-    # def save(self, *args, **kwargs):
-    #     if self.approved and not self.welcome_sended:
-    #         asyncio.run(executor_approved(self.chat_id))
-    #         self.welcome_sended = True
-    #     super(Executor, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        from telebot.bot_src.triggers import executor_approved
+        if self.approved and not self.welcome_sended:
+            asyncio.run(executor_approved(self.chat_id))
+            self.welcome_sended = True
+        super(Executor, self).save(*args, **kwargs)
 
 
 class Certificate(models.Model):
@@ -68,4 +68,4 @@ class Session(models.Model):
     date_time = models.DateTimeField()
 
     def __str__(self):
-        return f'{self.client} - {self.executor}: {str(self.date_time)}'
+        return f'{self.client} - {self.executor}: {self.date_time}'
