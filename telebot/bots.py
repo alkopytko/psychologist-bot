@@ -14,14 +14,14 @@ from telegram.ext import (
     CommandHandler, CallbackQueryHandler, PicklePersistence,  # CallbackQueryHandler,
 )
 
-from .bot_src.shared import CallBacks as cbg
-from .bot_src.signup import conv_handeler
+from telebot.bot_src.shared import CallBacks as cbg
+from telebot.bot_src.executor.signup import conv_handeler
 
 # from demo_menu import demo_menu
 
 
 load_dotenv()
-TOKEN=os.getenv('TELEGRAM_TOKEN')
+TOKEN_EXEC=os.getenv('TELEGRAM_TOKEN_EXECUTOR')
 
 
 logging.basicConfig(
@@ -88,7 +88,7 @@ async def buttons(update: Update, context: CallbackContext):
 
 # if __name__ == '__main__':
 pikle_persist = PicklePersistence('pikle_store')
-app = ApplicationBuilder().token(TOKEN).persistence(pikle_persist).build()
+app = ApplicationBuilder().token(TOKEN_EXEC).persistence(pikle_persist).build()
 
 app.add_handler(CommandHandler('start', cmd_start))
 app.add_handler(conv_handeler)

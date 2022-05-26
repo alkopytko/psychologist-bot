@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from telebot.bot import app
+from telebot.bots import app
 
 
 class Command(BaseCommand):

@@ -13,7 +13,7 @@ from telegram.ext import (
     CallbackQueryHandler,
 )
 
-from .shared import (
+from telebot.bot_src.shared import (
     msg_send,
     CallBacks as cbg,
     UPLOAD_PATH,
@@ -25,7 +25,7 @@ from .signup_vars import (
     Categories as cat,
     UD as ud
 )
-from ..models import Executor, Category, Certificate
+from telebot.models import Executor, Category, Certificate
 
 FIRST_NAME, LAST_NAME, SCANS, PHOTO, CATEGORIES, LANG_LEVEL, Q_CORRECT = range(7)
 
@@ -137,13 +137,14 @@ def save_to_db(update: Update, context: CallbackContext):
             'chat_id': update.effective_chat.id,
             'first_name': context.user_data[ud.first_name],
             'last_name': context.user_data[ud.last_name],
-            'photo': context.user_data[ud.photo],
+            'photo': context.user_data[ud.photo].name,
+            'lang_level': context.user_data[ud.lang_level]
         },
     )
     executor.category.add(*cats)
     executor.save()
     for scan in context.user_data[ud.scan_list]:
-        Certificate.objects.create(file=scan,executor=executor)
+        Certificate.objects.create(file=scan.name,executor=executor)
 
     # str_first_name = str(context.user_data[ud.first_name]) + '\n'
     # str_last_name = str(context.user_data[ud.last_name]) + '\n'
