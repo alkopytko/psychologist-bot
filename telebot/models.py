@@ -56,9 +56,18 @@ class ClientRequest(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     problem = models.TextField()
     budget = models.IntegerField()
+    sended = models.BooleanField(default=False)
 
     def __str__(self):
         return self.problem
+
+    def save(self, *args, **kwargs):
+        from telebot.bot_src.triggers import send_request_to_all_executors
+        if not self.sended:
+            # asyncio.run(executor_approved(self.chat_id))
+            send_request_to_all_executors(self)
+            self.sended = True
+        super(ClientRequest, self).save(*args, **kwargs)
 
 
 class Session(models.Model):
