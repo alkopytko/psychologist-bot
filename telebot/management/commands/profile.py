@@ -3,7 +3,7 @@ import asyncio
 from django.core.management.base import BaseCommand
 from telegram import InputMediaDocument
 
-from telebot.bots import app
+from telebot.bots import app_executor
 from telebot.bot_src.shared import UPLOAD_PATH
 from telebot.models import Executor
 
@@ -20,16 +20,16 @@ class Profile:
 
 
 async def profile_text(chat_id, text):
-    await app.bot.send_message(chat_id=chat_id, text=text)
+    await app_executor.bot.send_message(chat_id=chat_id, text=text)
 
 
 async def photosend(chat_id, filename):
-    await app.bot.send_photo(chat_id=chat_id, photo=open(UPLOAD_PATH.joinpath(filename), 'rb'))
+    await app_executor.bot.send_photo(chat_id=chat_id, photo=open(UPLOAD_PATH.joinpath(filename), 'rb'))
 
 
 async def groupfilesend(chat_id, filename_list):
     media = [InputMediaDocument(open(UPLOAD_PATH.joinpath(i), 'rb')) for i in filename_list]
-    await app.bot.send_media_group(chat_id=chat_id, media=media)
+    await app_executor.bot.send_media_group(chat_id=chat_id, media=media)
 
 
 async def async_handle(profiles_list):

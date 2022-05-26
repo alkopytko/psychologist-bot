@@ -14,6 +14,8 @@ from telegram.ext import (
     CommandHandler, CallbackQueryHandler, PicklePersistence,  # CallbackQueryHandler,
 )
 
+from telebot.bot_src.client.publish_request import request_conv_handler
+from telebot.bot_src.client.start import cmd_start_client
 from telebot.bot_src.shared import CallBacks as cbg
 from telebot.bot_src.executor.signup import conv_handeler
 
@@ -22,6 +24,7 @@ from telebot.bot_src.executor.signup import conv_handeler
 
 load_dotenv()
 TOKEN_EXEC=os.getenv('TELEGRAM_TOKEN_EXECUTOR')
+TOKEN_CLIENT=os.getenv('TELEGRAM_TOKEN_CLIENT')
 
 
 logging.basicConfig(
@@ -87,13 +90,17 @@ async def buttons(update: Update, context: CallbackContext):
 #     await msg_send(update, context, text)
 
 # if __name__ == '__main__':
-pikle_persist = PicklePersistence('pikle_store')
-app = ApplicationBuilder().token(TOKEN_EXEC).persistence(pikle_persist).build()
+pikle_persist_executor = PicklePersistence('pikle_store_executor')
+pikle_persist_client = PicklePersistence('pikle_store_client')
+app_executor = ApplicationBuilder().token(TOKEN_EXEC).persistence(pikle_persist_executor).build()
+app_client = ApplicationBuilder().token(TOKEN_CLIENT).persistence(pikle_persist_client).build()
 
-app.add_handler(CommandHandler('start', cmd_start))
-app.add_handler(conv_handeler)
-# app.add_handler(demo_menu)
-# app.add_handler(CommandHandler('signup', cmd_sign_up))
-app.add_handler(CallbackQueryHandler(buttons, 'hhh'))
+app_executor.add_handler(CommandHandler('start', cmd_start))
+app_executor.add_handler(conv_handeler)
+# app_executor.add_handler(demo_menu)
+# app_executor.add_handler(CommandHandler('signup', cmd_sign_up))
+app_executor.add_handler(CallbackQueryHandler(buttons, 'hhh'))
 
-# app.run_polling()
+app_client.add_handler(CommandHandler('start', cmd_start_client))
+app_client.add_handler(request_conv_handler)
+# app_executor.run_polling()
