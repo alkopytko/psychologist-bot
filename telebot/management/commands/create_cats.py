@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from telebot.bot_src.executor.signup_vars import Categories
+from telebot.bot_src.executor.executor_vars import Categories
 from telebot.models import Category
 
 

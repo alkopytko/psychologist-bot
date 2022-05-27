@@ -18,7 +18,7 @@ from telebot.bot_src.shared import (
     CallBacks as cbg,
     UPLOAD_PATH,
 )
-from .signup_vars import (
+from .executor_vars import (
     Keyboards as kbd,
     TextMessages as msg,
     CallBacks as cb,
@@ -35,7 +35,7 @@ async def cmd_sign_up(update: Update, context: CallbackContext):
     # context.user_data[ud.path] = UPLOAD_PATH.joinpath(str(update.effective_user.id))
     context.user_data[ud.media_group] = None
     context.user_data[ud.scan_list] = []
-    await msg_send(update, context, msg.hello)
+    await msg_send(update, context, msg.signup_hello)
     await msg_send(update, context, msg.first_name)
     return FIRST_NAME
 
@@ -172,7 +172,7 @@ async def wrong(update: Update, context: CallbackContext):
 conv_handeler = ConversationHandler(
     entry_points=[
         CommandHandler('signup', cmd_sign_up),
-        CallbackQueryHandler(cmd_sign_up, '^' + cbg.signup + '$'),
+        CallbackQueryHandler(cmd_sign_up, '^' + cb.signup + '$'),
     ],
     states={
         FIRST_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, first_name)],

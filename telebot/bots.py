@@ -16,62 +16,45 @@ from telegram.ext import (
 
 from telebot.bot_src.client.publish_request import request_conv_handler
 from telebot.bot_src.client.start import cmd_start_client
+from telebot.bot_src.executor.start import cmd_start
 from telebot.bot_src.shared import CallBacks as cbg
 from telebot.bot_src.executor.signup import conv_handeler
+from telebot.bot_src.executor.executor_vars import (
+    CallBacks as cb,
+)
 
 # from demo_menu import demo_menu
-
+from telebot.bot_src.triggers import submit_request
 
 load_dotenv()
-TOKEN_EXEC=os.getenv('TELEGRAM_TOKEN_EXECUTOR')
-TOKEN_CLIENT=os.getenv('TELEGRAM_TOKEN_CLIENT')
-
+TOKEN_EXEC = os.getenv('TELEGRAM_TOKEN_EXECUTOR')
+TOKEN_CLIENT = os.getenv('TELEGRAM_TOKEN_CLIENT')
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 
-
-async def cmd_start(update: Update, context: CallbackContext.DEFAULT_TYPE):
-    keyboard = [[
-        InlineKeyboardButton(
-            text='Sign UP',
-            callback_data=cbg.signup,
-        ),
-        InlineKeyboardButton(
-            text='Menu',
-            callback_data='hhh',
-        ),
-    ]]
-    markup = InlineKeyboardMarkup(keyboard)
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text='Hello Wold :)',
-        reply_markup=markup
-    )
-
-
-async def buttons(update: Update, context: CallbackContext):
-    keyboard = [[
-        InlineKeyboardButton(
-            text='Sign UP!!!',
-            callback_data=cbg.signup,
-        ),
-        InlineKeyboardButton(
-            text='Menu',
-            callback_data='hhh',
-        ),
-    ]]
-    # print('outside')
-    # query = update.callback_query
-    # await query.answer()
-    # if query.data == 'signup':
-    #     print('here')
-    #     return FIRST_NAME
-    query = update.callback_query
-    await query.answer()
-    await query.edit_message_reply_markup(InlineKeyboardMarkup(keyboard))
+# async def buttons(update: Update, context: CallbackContext):
+#     keyboard = [[
+#         InlineKeyboardButton(
+#             text='Sign UP!!!',
+#             callback_data=cbg.signup,
+#         ),
+#         InlineKeyboardButton(
+#             text='Menu',
+#             callback_data='hhh',
+#         ),
+#     ]]
+#     # print('outside')
+#     # query = update.callback_query
+#     # await query.answer()
+#     # if query.data == 'signup':
+#     #     print('here')
+#     #     return FIRST_NAME
+#     query = update.callback_query
+#     await query.answer()
+#     await query.edit_message_reply_markup(InlineKeyboardMarkup(keyboard))
 
 
 #     text = '''Please choose categories of requests you are working with:
@@ -97,9 +80,10 @@ app_client = ApplicationBuilder().token(TOKEN_CLIENT).persistence(pikle_persist_
 
 app_executor.add_handler(CommandHandler('start', cmd_start))
 app_executor.add_handler(conv_handeler)
+app_executor.add_handler(CallbackQueryHandler(submit_request, '^request'))
 # app_executor.add_handler(demo_menu)
 # app_executor.add_handler(CommandHandler('signup', cmd_sign_up))
-app_executor.add_handler(CallbackQueryHandler(buttons, 'hhh'))
+# app_executor.add_handler(CallbackQueryHandler(buttons, 'hhh'))
 
 app_client.add_handler(CommandHandler('start', cmd_start_client))
 app_client.add_handler(request_conv_handler)
