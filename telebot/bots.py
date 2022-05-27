@@ -16,12 +16,15 @@ from telegram.ext import (
 
 from telebot.bot_src.client.publish_request import request_conv_handler
 from telebot.bot_src.client.schedule import schedule_conv_handler
-from telebot.bot_src.client.start import cmd_start_client
-from telebot.bot_src.executor.start import cmd_start, submit_request
+from telebot.bot_src.client.start import cmd_start_client, calendar
+from telebot.bot_src.executor.start import cmd_start, submit_request, calendar_executor
 from telebot.bot_src.shared import CallBacks as cbg
 from telebot.bot_src.executor.signup import conv_handeler
 from telebot.bot_src.executor.executor_vars import (
-    CallBacks as cb,
+    CallBacks as cb_ex,
+)
+from telebot.bot_src.client.client_vars import (
+    CallBacks as cb_cl,
 )
 
 # from demo_menu import demo_menu
@@ -81,6 +84,7 @@ app_client = ApplicationBuilder().token(TOKEN_CLIENT).persistence(pikle_persist_
 app_executor.add_handler(CommandHandler('start', cmd_start))
 app_executor.add_handler(conv_handeler)
 app_executor.add_handler(CallbackQueryHandler(submit_request, '^request'))
+app_executor.add_handler(CallbackQueryHandler(calendar_executor, cb_ex.calendar))
 # app_executor.add_handler(demo_menu)
 # app_executor.add_handler(CommandHandler('signup', cmd_sign_up))
 # app_executor.add_handler(CallbackQueryHandler(buttons, 'hhh'))
@@ -88,4 +92,5 @@ app_executor.add_handler(CallbackQueryHandler(submit_request, '^request'))
 app_client.add_handler(CommandHandler('start', cmd_start_client))
 app_client.add_handler(request_conv_handler)
 app_client.add_handler(schedule_conv_handler)
+app_client.add_handler(CallbackQueryHandler(calendar, cb_cl.consultations))
 # app_executor.run_polling()

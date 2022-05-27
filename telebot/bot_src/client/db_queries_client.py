@@ -4,6 +4,29 @@ from telebot.bot_src.client.client_vars import UD as ud
 from telebot.models import Client, ClientRequest, Session, Executor
 
 
+class ClientExternal:
+    def __init__(self, user: Client):
+        self.user_id = user.user_id
+        self.chat_id = user.chat_id
+        self.name = user.name
+
+
+class ClientRequestExternal:
+    def __init__(self, request: ClientRequest):
+        self.client = request.client
+        self.problem = request.problem
+        self.budget = request.budget
+        self.sended = request.sended
+
+
+class SessionExternal:
+    def __init__(self, session: Session):
+        self.client = session.client
+        self.executor = session.executor
+        self.request = session.request
+        self.date_time = session.date_time
+
+
 def db_client(client: User):
     client_obj, _ = Client.objects.get_or_create(user_id=client.id,
                                                  defaults={
@@ -36,7 +59,7 @@ def get_client(client_id):
 
 def save_session_to_db(userdata: dict):
     request = get_request(userdata[ud.current_request])
-    executor=get_executor(userdata[ud.current_request_executor])
+    executor = get_executor(userdata[ud.current_request_executor])
     print(executor)
     obj = Session.objects.create(
         client=request.client,
@@ -45,3 +68,12 @@ def save_session_to_db(userdata: dict):
         date_time=userdata[ud.current_request_datetime]
     )
     return obj.id
+
+
+def get_sessions_client(client_id) -> list[SessionExternal]:
+    out = []
+    client = Client.objects.filter(user_id=client_id).first()
+    client_sessions = Session.objects.filter(client=client)
+    for session in client_sessions:
+        out.append(SessionExternal(session))
+    return out

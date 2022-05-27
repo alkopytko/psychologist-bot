@@ -1,6 +1,7 @@
 from asgiref.sync import sync_to_async
 
-from telebot.models import Executor
+from telebot.bot_src.client.db_queries_client import SessionExternal
+from telebot.models import Executor, Client, Session
 
 
 class ExecutorExternal:
@@ -26,3 +27,13 @@ async def get_executor(user_id: int) -> ExecutorExternal:
 def extract_executor_from_db(user_id: int) -> ExecutorExternal:
     executor = Executor.objects.filter(user_id=user_id).first()
     return ExecutorExternal(executor) if executor else None
+
+
+def get_sessions_executor(executor_id) -> list[SessionExternal]:
+    out = []
+    # client = Client.objects.filter(user_id=client_id).first()
+    executor = Executor.objects.filter(user_id=executor_id).first()
+    client_sessions = Session.objects.filter(executor=executor)
+    for session in client_sessions:
+        out.append(SessionExternal(session))
+    return out
