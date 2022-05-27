@@ -101,7 +101,7 @@ async def photo(update: Update, context: CallbackContext):
         await msg_send(update, context, msg.categories, reply_markup=kbd.categories())
         return CATEGORIES
     else:
-        text = 'Please, upload a jpg photo or set compress checkbox'
+        text = 'Please, upload a jpg photo'
         await msg_send(update, context, text, kbd.skip())
         return
 

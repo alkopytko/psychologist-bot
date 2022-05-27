@@ -25,7 +25,7 @@ class Executor(models.Model):
     welcome_sended = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.user_id)
+        return f'{self.first_name} {self.last_name}'
 
     def save(self, *args, **kwargs):
         from telebot.bot_src.triggers import executor_approved
@@ -49,7 +49,7 @@ class Client(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return str(self.user_id)
+        return str(self.name)
 
 
 class ClientRequest(models.Model):
