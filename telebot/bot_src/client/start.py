@@ -17,8 +17,12 @@ async def cmd_start_client(update: Update, context: CallbackContext):
 async def calendar(update: Update, context: CallbackContext):
     call = sync_to_async(get_sessions_client)
     sessions = await call(update.effective_user.id)
-    for session in sessions:
-        text=f'Session with {session.executor.first_name}\n' \
-             f'Date: {session.date_time}'
-        await update.effective_chat.send_message(text=text)
+    if sessions:
+        for session in sessions:
+            text=f'Session with {session.executor.first_name}\n' \
+                 f'Date: {session.date_time}'
+            await update.effective_chat.send_message(text=text)
+    else:
+        await update.effective_chat.send_message('There are no sessions scheduled')
+        await cmd_start_client(update, context)
 

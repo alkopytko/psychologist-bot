@@ -57,7 +57,7 @@ def get_client(client_id):
     return Client.objects.filter(user_id=client_id).first()
 
 
-def save_session_to_db(userdata: dict):
+def save_session_to_db(userdata: dict) -> SessionExternal:
     request = get_request(userdata[ud.current_request])
     executor = get_executor(userdata[ud.current_request_executor])
     print(executor)
@@ -67,7 +67,7 @@ def save_session_to_db(userdata: dict):
         request=request,
         date_time=userdata[ud.current_request_datetime]
     )
-    return obj.id
+    return SessionExternal(obj)
 
 
 def get_sessions_client(client_id) -> list[SessionExternal]:

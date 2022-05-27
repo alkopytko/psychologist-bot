@@ -3,10 +3,16 @@ import asyncio
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext
 
-from telebot.bots import app_executor, app_client
+from telebot.bot_executor import app_executor
+from ..bot_client import app_client
 
 from .triggers_vars import (
     TextMessages as msg
+)
+
+from telebot.bot_src.executor.executor_vars import (
+    Keyboards as kbd,
+    TextMessages as msg,
 )
 from ..models import ClientRequest, Executor
 
@@ -39,10 +45,11 @@ async def send_message_to_list_of_chat_id(chat_id_list, text, reply_markup=None)
 
 async def executor_approved(executor_chat_id: int):
     await app_executor.bot.send_message(chat_id=executor_chat_id, text=msg.approved_signup)
+    await app_executor.bot.send_message(tchat_id=executor_chat_id,
+                                        ext=msg.wellcome_registered,
+                                        reply_markup=kbd.calendar())
 
 
-async def send_submit_request(client_chat_id,text,reply_markup=None):
-
+async def send_submit_request(client_chat_id, text, reply_markup=None):
     await app_client.bot.send_message(chat_id=client_chat_id,
                                       text=text)
-

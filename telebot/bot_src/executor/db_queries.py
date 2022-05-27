@@ -14,6 +14,7 @@ class ExecutorExternal:
         self.photo = user.photo
         self.categories = [cat.category for cat in user.category.all()]
         self.scans = [scan.file for scan in user.certificate_set.all()]
+        self.approved = user.approved
 
     def __str__(self):
         return self.first_name

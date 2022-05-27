@@ -3,7 +3,7 @@ import asyncio
 from django.core.management.base import BaseCommand
 from telegram import InputMediaDocument
 
-from telebot.bots import app_executor
+from telebot.bot_executor import app_executor
 from telebot.bot_src.shared import UPLOAD_PATH
 from telebot.models import Executor
 
