@@ -62,13 +62,14 @@ class ClientRequest(models.Model):
         return self.problem
 
     def save(self, *args, **kwargs):
-        from telebot.bot_src.triggers import send_request_to_all_executors
+        super(ClientRequest, self).save(*args, **kwargs)
         if not self.sended:
+            from telebot.bot_src.triggers import send_request_to_all_executors
             # asyncio.run(executor_approved(self.chat_id))
             send_request_to_all_executors(self)
             self.sended = True
-        super(ClientRequest, self).save(*args, **kwargs)
-
+            # super(ClientRequest, self).save(*args, **kwargs)
+            self.save()
 
 class Session(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)

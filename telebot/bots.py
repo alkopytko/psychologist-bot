@@ -16,7 +16,7 @@ from telegram.ext import (
 
 from telebot.bot_src.client.publish_request import request_conv_handler
 from telebot.bot_src.client.start import cmd_start_client
-from telebot.bot_src.executor.start import cmd_start
+from telebot.bot_src.executor.start import cmd_start, submit_request
 from telebot.bot_src.shared import CallBacks as cbg
 from telebot.bot_src.executor.signup import conv_handeler
 from telebot.bot_src.executor.executor_vars import (
@@ -24,7 +24,6 @@ from telebot.bot_src.executor.executor_vars import (
 )
 
 # from demo_menu import demo_menu
-from telebot.bot_src.triggers import submit_request
 
 load_dotenv()
 TOKEN_EXEC = os.getenv('TELEGRAM_TOKEN_EXECUTOR')
