@@ -36,9 +36,10 @@ async def budget(update: Update, context: CallbackContext):
         context.user_data[ud.budget] = int(summ)
         async_save_request_to_db = sync_to_async(save_request_to_db, thread_sensitive=False)
         async_db_client = sync_to_async(db_client, thread_sensitive=False)
-        await async_save_request_to_db(client=await async_db_client(client=update.effective_user),
+        request_id = await async_save_request_to_db(client=await async_db_client(client=update.effective_user),
                                  userdata=context.user_data)
-        await update.effective_chat.send_message(text=msg.request_success)
+        additional_text=f'\nYour request id: {request_id}'
+        await update.effective_chat.send_message(text=msg.request_success+additional_text)
         return ConversationHandler.END
     else:
         await update.effective_chat.send_message(text=msg.wrong_budget_data)
@@ -49,10 +50,11 @@ async def budget_wrong(update: Update, context: CallbackContext):
 
 
 def save_request_to_db(client: Client, userdata: dict):
-    ClientRequest.objects.create(client=client,
+    obj=ClientRequest.objects.create(client=client,
                                  problem=userdata[ud.problem],
                                  budget=userdata[ud.budget]
                                  )
+    return obj.id
 
 
 async def cmd_cancel(update: Update, context: CallbackContext):
