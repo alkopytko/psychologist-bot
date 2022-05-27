@@ -14,7 +14,7 @@ from telebot.bot_src.executor.executor_vars import (
     Keyboards as kbd,
     TextMessages as msg,
 )
-from ..models import ClientRequest, Executor
+from ..models import ClientRequest, Executor, Session
 
 
 def create_markup_to_request(request: ClientRequest):
@@ -53,3 +53,12 @@ async def executor_approved(executor_chat_id: int):
 async def send_submit_request(client_chat_id, text, reply_markup=None):
     await app_client.bot.send_message(chat_id=client_chat_id,
                                       text=text)
+
+
+async def external_msg_to_executor(chat_id, text, reply_markup=None):
+    await app_executor.bot.send_message(chat_id=chat_id, text=text, reply_markup=reply_markup)
+    
+def send_scheduled_session(session:Session):
+    text = f'A new session scheduled with {session.client.name}\n' \
+           f'You will get a link to session in 20 minutes before start'
+    asyncio.run(external_msg_to_executor(session.executor.chat_id,text))

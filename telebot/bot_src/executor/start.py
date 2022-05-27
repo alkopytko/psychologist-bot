@@ -33,6 +33,7 @@ async def submit_request(update: Update, context: CallbackContext):
     executor = await get_executor(update.effective_user.id)
     text = f'Your request submitted by {executor.first_name}\n' \
            f'...(Some additional info about {executor.first_name} plus button "See profile")'
+    from telebot.bot_src.triggers import send_submit_request
     # await send_submit_request(client_chat_id=client_chat_id,
     #                           text=text)
 

@@ -79,3 +79,8 @@ class Session(models.Model):
 
     def __str__(self):
         return f'{self.client} - {self.executor}: {self.date_time}'
+
+    # def save(self, *args, **kwargs):
+    #     super(Session, self).save(*args, **kwargs)
+    #     from telebot.bot_src.triggers import send_scheduled_session
+    #     send_scheduled_session(self)

@@ -1,10 +1,10 @@
+import asyncio
 
 from asgiref.sync import sync_to_async
 from telegram import Update
 from telegram.ext import ConversationHandler, CallbackQueryHandler, CallbackContext, MessageHandler, filters, \
     CommandHandler
 
-from telebot.bot_executor import external_msg_to_executor
 from telebot.bot_src.client.client_vars import (
     CallBacks as cb,
     UD as ud,
@@ -30,6 +30,7 @@ async def schedule(update: Update, context: CallbackContext):
 
 async def enter_date(update: Update, context: CallbackContext):
     from telebot.bot_executor import app_executor
+    from telebot.bot_src.triggers import external_msg_to_executor
 
     context.user_data[ud.current_request_datetime] = update.effective_message.text
     call = sync_to_async(save_session_to_db)
@@ -38,10 +39,8 @@ async def enter_date(update: Update, context: CallbackContext):
 
     text = f'A new session scheduled with {session.client.name}\n' \
            f'You will get a link to session in 20 minutes before start'
-    async with app_executor.bot as botik:
-        await botik.send_message(chat_id=session.executor.chat_id, text=text)
+    await app_executor.bot.send_message(chat_id=session.executor.chat_id, text=text)
     # await external_msg_to_executor(chat_id=session.executor.chat_id, text=text)
-
     return ConversationHandler.END
 
 

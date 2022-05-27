@@ -31,5 +31,3 @@ app_executor.add_handler(CallbackQueryHandler(submit_request, '^request'))
 app_executor.add_handler(CallbackQueryHandler(calendar_executor, cb_ex.calendar))
 
 
-async def external_msg_to_executor(chat_id, text, reply_markup=None):
-    await app_executor.bot.send_message(chat_id=chat_id, text=text, reply_markup=reply_markup)
