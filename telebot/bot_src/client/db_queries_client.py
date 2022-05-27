@@ -60,7 +60,7 @@ def get_client(client_id):
 def save_session_to_db(userdata: dict) -> SessionExternal:
     request = get_request(userdata[ud.current_request])
     executor = get_executor(userdata[ud.current_request_executor])
-    print(executor)
+    # print(executor)
     obj = Session.objects.create(
         client=request.client,
         executor=get_executor(userdata[ud.current_request_executor]),

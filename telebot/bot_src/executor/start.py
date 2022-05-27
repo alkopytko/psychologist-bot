@@ -40,6 +40,7 @@ async def submit_request(update: Update, context: CallbackContext):
     await app_client.bot.send_message(chat_id=client_chat_id,
                                       text=text,
                                       reply_markup=kbd_cli.schedule(executor.user_id,request_id))
+    await update.effective_chat.send_message('Submitted')
 
 async def calendar_executor(update: Update, context: CallbackContext):
     call = sync_to_async(get_sessions_executor)
