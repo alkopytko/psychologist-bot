@@ -22,7 +22,7 @@
 #
 #
 class TextMessages:
-    approved_signup='Congratulations, you are approved'
+    approved_signup = 'Congratulations, you are approved'
 #     signup_hello = 'Welcome to BOT! BOT is a mental health platform, where you can find a psychologists according to ' \
 #             'your needs and opportunities. '
 #

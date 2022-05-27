@@ -39,7 +39,7 @@ async def enter_date(update: Update, context: CallbackContext):
 
     text = f'A new session scheduled with {session.client.name}\n' \
            f'You will get a link to session in 20 minutes before start'
-    await app_executor.bot.send_message(chat_id=session.executor.chat_id, text=text)
+    # await app_executor.bot.send_message(chat_id=session.executor.chat_id, text=text)
     # await external_msg_to_executor(chat_id=session.executor.chat_id, text=text)
     return ConversationHandler.END
 

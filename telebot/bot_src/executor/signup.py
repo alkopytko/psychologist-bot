@@ -54,6 +54,8 @@ async def last_name(update: Update, context: CallbackContext):
 
 async def skip_scans(update: Update, context: CallbackContext):
     await msg_send(update, context, msg.photo, reply_markup=kbd.skip())
+    context.user_data[ud.scan_list] = None
+
     return PHOTO
 
 
@@ -86,6 +88,7 @@ async def scans(update: Update, context: CallbackContext):
 
 async def skip_photo(update: Update, context: CallbackContext):
     await msg_send(update, context, msg.categories, reply_markup=kbd.categories())
+    context.user_data[ud.photo] = None
     return CATEGORIES
 
 
@@ -137,14 +140,15 @@ def save_to_db(update: Update, context: CallbackContext):
             'chat_id': update.effective_chat.id,
             'first_name': context.user_data[ud.first_name],
             'last_name': context.user_data[ud.last_name],
-            'photo': context.user_data[ud.photo].name,
+            'photo': context.user_data[ud.photo],
             'lang_level': context.user_data[ud.lang_level]
         },
     )
     executor.category.add(*cats)
     executor.save()
-    for scan in context.user_data[ud.scan_list]:
-        Certificate.objects.create(file=scan.name,executor=executor)
+    if context.user_data[ud.scan_list]:
+        for scan in context.user_data[ud.scan_list]:
+            Certificate.objects.create(file=scan.name,executor=executor)
 
     # str_first_name = str(context.user_data[ud.first_name]) + '\n'
     # str_last_name = str(context.user_data[ud.last_name]) + '\n'

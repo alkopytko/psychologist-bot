@@ -7,7 +7,7 @@ from telebot.bot_executor import app_executor
 from ..bot_client import app_client
 
 from .triggers_vars import (
-    TextMessages as msg
+    TextMessages as msg_trig
 )
 
 from telebot.bot_src.executor.executor_vars import (
@@ -44,9 +44,9 @@ async def send_message_to_list_of_chat_id(chat_id_list, text, reply_markup=None)
 
 
 async def executor_approved(executor_chat_id: int):
-    await app_executor.bot.send_message(chat_id=executor_chat_id, text=msg.approved_signup)
-    await app_executor.bot.send_message(tchat_id=executor_chat_id,
-                                        ext=msg.wellcome_registered,
+    await app_executor.bot.send_message(chat_id=executor_chat_id, text=msg_trig.approved_signup)
+    await app_executor.bot.send_message(chat_id=executor_chat_id,
+                                        text=msg.wellcome_registered,
                                         reply_markup=kbd.calendar())
 
 

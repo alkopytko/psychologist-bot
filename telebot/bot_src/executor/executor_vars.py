@@ -49,12 +49,13 @@ class Keyboards:
 
     @classmethod
     def categories(cls, active_list=None):
+
         if active_list is None:
             active_list = []
-        step = 3
+        step = 2
         keys = [
             InlineKeyboardButton(
-                text=i + (' -', ' +')[i in active_list],
+                text=i + (' ❌', ' ✅')[i in active_list],
                 callback_data=i)
             for i in Categories.categories
         ]
