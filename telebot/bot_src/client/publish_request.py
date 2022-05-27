@@ -9,8 +9,7 @@ from .client_vars import (
     UD as ud,
     CallBacks as cb,
 )
-from .start import db_client
-from ...models import Client, ClientRequest
+from .db_queries_client import db_client, save_request_to_db
 
 PROBLEM, BUDGET = range(2)
 
@@ -37,9 +36,9 @@ async def budget(update: Update, context: CallbackContext):
         async_save_request_to_db = sync_to_async(save_request_to_db, thread_sensitive=False)
         async_db_client = sync_to_async(db_client, thread_sensitive=False)
         request_id = await async_save_request_to_db(client=await async_db_client(client=update.effective_user),
-                                 userdata=context.user_data)
-        additional_text=f'\nYour request id: {request_id}'
-        await update.effective_chat.send_message(text=msg.request_success+additional_text)
+                                                    userdata=context.user_data)
+        additional_text = f'\nYour request id: {request_id}'
+        await update.effective_chat.send_message(text=msg.request_success + additional_text)
         return ConversationHandler.END
     else:
         await update.effective_chat.send_message(text=msg.wrong_budget_data)
@@ -47,14 +46,6 @@ async def budget(update: Update, context: CallbackContext):
 
 async def budget_wrong(update: Update, context: CallbackContext):
     await update.effective_chat.send_message(text=msg.wrong_problem_data)
-
-
-def save_request_to_db(client: Client, userdata: dict):
-    obj=ClientRequest.objects.create(client=client,
-                                 problem=userdata[ud.problem],
-                                 budget=userdata[ud.budget]
-                                 )
-    return obj.id
 
 
 async def cmd_cancel(update: Update, context: CallbackContext):

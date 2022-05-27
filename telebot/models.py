@@ -75,7 +75,7 @@ class Session(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     executor = models.ForeignKey(Executor, on_delete=models.CASCADE)
     request = models.ForeignKey(ClientRequest, on_delete=models.CASCADE)
-    date_time = models.DateTimeField()
+    date_time = models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.client} - {self.executor}: {self.date_time}'

@@ -15,6 +15,7 @@ from telegram.ext import (
 )
 
 from telebot.bot_src.client.publish_request import request_conv_handler
+from telebot.bot_src.client.schedule import schedule_conv_handler
 from telebot.bot_src.client.start import cmd_start_client
 from telebot.bot_src.executor.start import cmd_start, submit_request
 from telebot.bot_src.shared import CallBacks as cbg
@@ -86,4 +87,5 @@ app_executor.add_handler(CallbackQueryHandler(submit_request, '^request'))
 
 app_client.add_handler(CommandHandler('start', cmd_start_client))
 app_client.add_handler(request_conv_handler)
+app_client.add_handler(schedule_conv_handler)
 # app_executor.run_polling()

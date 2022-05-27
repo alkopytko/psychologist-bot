@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
 
-from telebot.bot_src.executor.db_queries import get_executor
+from telebot.bot_src.executor.db_queries import get_executor, extract_executor_from_db
 from telebot.bot_src.shared import CallBacks as cbg
 
 from .executor_vars import (
@@ -11,6 +11,7 @@ from .executor_vars import (
     Categories as cat,
     UD as ud
 )
+from ..client.client_vars import Keyboards as kbd_cli
 # from ..triggers import send_submit_request
 
 
@@ -29,7 +30,11 @@ async def submit_request(update: Update, context: CallbackContext):
     query = update.callback_query
     await query.answer()
     _, client_chat_id, request_id = query.data.split(':')
-    text = f'hohoho {client_chat_id} {request_id}'
+    executor = await get_executor(update.effective_user.id)
+    text = f'Your request submitted by {executor.first_name}\n' \
+           f'...(Some additional info about {executor.first_name} plus button "See profile")'
     # await send_submit_request(client_chat_id=client_chat_id,
     #                           text=text)
-    await app_client.bot.send_message(chat_id=client_chat_id, text=text)
+    await app_client.bot.send_message(chat_id=client_chat_id,
+                                      text=text,
+                                      reply_markup=kbd_cli.schedule(executor.user_id,request_id))
